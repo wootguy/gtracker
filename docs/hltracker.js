@@ -716,6 +716,10 @@ function expand_server_row(serverid, redraw, no_save_settings) {
 	var expand_content = document.getElementsByClassName("server-content-row " + serverid)[0];
 	var expand_row = document.querySelector(".server-row[serverid='" + serverid + "']");
 	
+	if (!expand_content) {
+		return; // server deleted
+	}
+	
 	expand_content.classList.add("expanded");
 	expand_row.classList.add("expanded");
 	
