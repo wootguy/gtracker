@@ -85,12 +85,17 @@ int webRequest(string url, string& response_string) {
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
 		//curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header_string);
 
-		curl_easy_perform(curl);
+		CURLcode result = curl_easy_perform(curl);
 
 		long response_code;
 		double elapsed;
 		curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
 		curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &elapsed);
+
+		if (result != CURLE_OK) {
+			printf("curl_easy_perform() failed: %d (%s), HTTP=%ld, time=%.3f\n",
+				result, curl_easy_strerror(result), response_code, elapsed);
+		}
 
 		curl_easy_cleanup(curl);
 		curl = NULL;
